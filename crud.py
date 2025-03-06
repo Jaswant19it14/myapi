@@ -48,9 +48,9 @@ def delete_country(db: Session, country_id: int):
 # Operator CRUD
 def create_operator(db: Session, operator: OperatorCreate):
     # Check if an operator with the same email already exists
-    existing_operator = db.query(Operator).filter(Operator.email == operator.email).first()
-    if existing_operator:
-        raise HTTPException(status_code=400, detail="Operator with this email already exists")
+    # existing_operator = db.query(Operator).filter(Operator.email == operator.email).first()
+    # if existing_operator:
+    #     raise HTTPException(status_code=400, detail="Operator with this email already exists")
 
     # Find the country by id
     country = db.query(Country).filter(Country.id == operator.country_id).first()
@@ -59,7 +59,7 @@ def create_operator(db: Session, operator: OperatorCreate):
 
     db_operator = Operator(
         name=operator.name,
-        email=operator.email,
+        # email=operator.email,
         status=operator.status,
         country_id=country.id
     )
@@ -106,16 +106,6 @@ def get_operators_by_country(db: Session, country_id: int):
 
 # Advertiser CRUD
 def create_advertiser(db: Session, advertiser: AdvertiserCreate):
-    # Find the operator by id
-    operator = db.query(Operator).filter(Operator.id == advertiser.operator_id).first()
-    if not operator:
-        raise HTTPException(status_code=404, detail="Operator not found")
-
-    # Find the country by id
-    country = db.query(Country).filter(Country.id == advertiser.country_id).first()
-    if not country:
-        raise HTTPException(status_code=404, detail="Country not found")
-
     db_advertiser = Advertiser(
         name=advertiser.name,
         company_name=advertiser.company_name,
@@ -125,16 +115,13 @@ def create_advertiser(db: Session, advertiser: AdvertiserCreate):
         verifyOtpUrl=advertiser.verifyOtpUrl,
         statusCheckUrl=advertiser.statusCheckUrl,
         capping=advertiser.capping,
-        operator_id=operator.id,
-        country_id=country.id  # Add country_id field
+        operator_id=advertiser.operator_id,
+        country_id=advertiser.country_id,
+        fallback_advertiser_id=advertiser.fallback_advertiser_id
     )
-    try:
-        db.add(db_advertiser)
-        db.commit()
-        db.refresh(db_advertiser)
-    except IntegrityError:
-        db.rollback()
-        raise HTTPException(status_code=400, detail="Advertiser with this email already exists")
+    db.add(db_advertiser)
+    db.commit()
+    db.refresh(db_advertiser)
     return db_advertiser
 
 def get_advertisers_by_operator(db: Session, operator_id: int):

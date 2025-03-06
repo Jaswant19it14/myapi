@@ -31,7 +31,7 @@ class CountrySummary(BaseModel):
 
 class OperatorBase(BaseModel):
     name: str
-    email: str
+    # email: str
     status: str
 
 class OperatorCreate(OperatorBase):
@@ -39,14 +39,14 @@ class OperatorCreate(OperatorBase):
 
 class OperatorUpdate(BaseModel):
     name: Optional[str] = None
-    email: Optional[str] = None
+    # email: Optional[str] = None
     status: Optional[str] = None
     country_id: Optional[int] = None
 
 class Operator(BaseModel):
     id: int
     name: str
-    email: str
+    # email: str
     status: str
     country: Optional[CountrySummary] = None
 
@@ -73,6 +73,7 @@ class AdvertiserBase(BaseModel):
 class AdvertiserCreate(AdvertiserBase):
     operator_id: int
     country_id: int  # Add country_id field
+    fallback_advertiser_id: Optional[int] = None  # Add fallback_advertiser_id field
 
 class Advertiser(BaseModel):
     id: int
@@ -86,6 +87,7 @@ class Advertiser(BaseModel):
     statusCheckUrl: str
     capping: str
     operator: Optional[OperatorSummary] = None
+    fallback_advertiser: Optional['AdvertiserSummary'] = None  # Add fallback_advertiser field
     class Config:
         orm_mode = True
 

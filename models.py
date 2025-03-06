@@ -16,7 +16,7 @@ class Operator(Base):
     __tablename__ = "operators"
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)  # Ensure id is auto-incremented
     name = Column(String(100), index=True)  # Specify length
-    email = Column(String(100), unique=True, index=True)  # Specify length
+    # email = Column(String(100), unique=True, index=True)  # Specify length
     status = Column(String(50))  # Specify length
     country_id = Column(Integer, ForeignKey("countries.id", ondelete="RESTRICT"))
     country = relationship("Country", back_populates="operators")
@@ -35,19 +35,22 @@ class Publisher(Base):
 
 class Advertiser(Base):
     __tablename__ = "advertisers"
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)  # Ensure id is auto-incremented
-    name = Column(String(100), index=True)  # Specify length
-    company_name = Column(String(100), index=True)  # Specify length
-    email = Column(String(100), unique=True, index=True)  # Specify length
-    status = Column(String(50))  # Specify length
-    sendOtpUrl = Column(String(200))
-    verifyOtpUrl = Column(String(200))
-    statusCheckUrl = Column(String(200))
-    capping = Column(String(100))  # Add capping attribute
-    country_id = Column(Integer, ForeignKey("countries.id", ondelete="RESTRICT"))  # Add country_id field
-    operator_id = Column(Integer, ForeignKey("operators.id", ondelete="RESTRICT"))  # Update foreign key reference
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(length=255), nullable=False)
+    company_name = Column(String(length=255), nullable=False)
+    email = Column(String(length=255), nullable=False)
+    status = Column(String(length=50), nullable=False)
+    sendOtpUrl = Column(String(length=255))
+    verifyOtpUrl = Column(String(length=255))
+    statusCheckUrl = Column(String(length=255))
+    capping = Column(String(length=50))
+    operator_id = Column(Integer, ForeignKey("operators.id"))
+    country_id = Column(Integer, ForeignKey("countries.id"))
+    fallback_advertiser_id = Column(Integer, ForeignKey("advertisers.id"))
+
     operator = relationship("Operator", back_populates="advertisers")
     country = relationship("Country", back_populates="advertisers")
+    fallback_advertiser = relationship("Advertiser", remote_side=[id])
 
 class Campaign(Base):
     __tablename__ = "campaigns"
