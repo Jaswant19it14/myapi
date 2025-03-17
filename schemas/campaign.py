@@ -10,14 +10,14 @@ class CampaignBase(BaseModel):
     publisherPrice: float
     advertiserPrice: float
     fallbackEnabled: bool
-    redirection_advertiser_id: Optional[int] = None
+    isLive: bool
 
 class CampaignCreate(CampaignBase):
     publisher_name: str
     country_name: str
     operator_name: str
     advertiser_name: str
-    redirection_advertiser_name: Optional[str] = None
+    # redirection_advertiser_name: Optional[str] = None
 
 class Campaign(CampaignBase):
     id: int
@@ -25,7 +25,7 @@ class Campaign(CampaignBase):
     country_name: str
     operator_name: str
     advertiser_name: str
-    redirection_advertiser_name: Optional[str] = None
+    # redirection_advertiser_name: Optional[str] = None
 
     class Config:
         orm_mode: True

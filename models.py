@@ -62,15 +62,16 @@ class Campaign(Base):
     advertiser_id = Column(Integer, ForeignKey("advertisers.id"))
     publisherPrice = Column(Float)
     advertiserPrice = Column(Float)
+    isLive = Column(Boolean, default=False)
     fallbackEnabled = Column(Boolean, default=False)
-    redirection_advertiser_id = Column(Integer, ForeignKey("advertisers.id"), nullable=True)
+    # redirection_advertiser_id = Column(Integer, ForeignKey("advertisers.id"), nullable=True)
 
     # Relationships (optional, for easier querying)
     publisher = relationship("Publisher", foreign_keys=[publisher_id])
     country = relationship("Country", foreign_keys=[country_id], back_populates="campaigns")
     operator = relationship("Operator", foreign_keys=[operator_id], back_populates="campaigns")
     advertiser = relationship("Advertiser", foreign_keys=[advertiser_id])
-    redirection_advertiser = relationship("Advertiser", foreign_keys=[redirection_advertiser_id])
+    # redirection_advertiser = relationship("Advertiser", foreign_keys=[redirection_advertiser_id])
 
     __table_args__ = (UniqueConstraint('name', name='uq_campaign_name'),)
 

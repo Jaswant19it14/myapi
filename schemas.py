@@ -149,7 +149,7 @@ class CampaignCreate(CampaignBase):
     country_id: int
     operator_id: int
     advertiser_id: int
-    redirection_advertiser_id: Optional[int] = None
+    # redirection_advertiser_id: Optional[int] = None
 
 class Campaign(BaseModel):
     id: int
@@ -157,11 +157,12 @@ class Campaign(BaseModel):
     publisherPrice: float
     advertiserPrice: float
     fallbackEnabled: bool
+    isLive: bool
     publisher: PublisherSummary
     country: CountrySummary
     operator: OperatorSummary
     advertiser: AdvertiserSummary
-    redirection_advertiser: Optional[AdvertiserSummary] = None
+    # redirection_advertiser: Optional[AdvertiserSummary] = None
 
     class Config:
         orm_mode = True
@@ -175,7 +176,8 @@ class CampaignUpdate(BaseModel):
     publisherPrice: Optional[float] = None
     advertiserPrice: Optional[float] = None
     fallbackEnabled: Optional[bool] = None
-    redirection_advertiser_id: Optional[int] = None
+    isLive: Optional[bool] = None
+    # redirection_advertiser_id: Optional[int] = None
 
 class UserBase(BaseModel):
     firstName: str
