@@ -108,6 +108,7 @@ class AdvertiserUpdate(BaseModel):
     statusCheckUrl: str = None
     capping: Optional[str] = None
     operator_id: int = None
+    fallback_advertiser_id: Optional[int] = None  # Add fallback_advertiser_id field
 
 from pydantic import BaseModel
 
