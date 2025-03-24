@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import Optional, Dict
 
 class CountryBase(BaseModel):
     id: int
@@ -115,7 +115,7 @@ from pydantic import BaseModel
 class PublisherBase(BaseModel):
     name: str
     company_name: str
-    email: str
+    # email: str
     block_rule: str
     status: str
     cap: int  # Add cap attribute
@@ -197,3 +197,12 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+class ElasticSearch(BaseModel):
+    name: str
+    role: str
+    email: str
+    experiance: str
+
+class ElasticsearchRequest(BaseModel):
+    document: Dict[str, str]

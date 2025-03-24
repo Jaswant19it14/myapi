@@ -28,7 +28,7 @@ class Publisher(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)  # Ensure id is auto-incremented
     name = Column(String(100), unique=True, index=True)
     company_name = Column(String(100), index=True)  # Add company_name attribute
-    email = Column(String(100), unique=True, index=True)
+    # email = Column(String(100), unique=True, index=True)
     block_rule = Column(String(100))  # Change blockRule to block_rule
     status = Column(String(100), unique=False, index=True)
     cap = Column(Integer, default=0)  # Add cap attribute with default value

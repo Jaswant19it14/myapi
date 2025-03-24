@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from models import Base, Country as CountryModel, Operator as OperatorModel, Advertiser as AdvertiserModel, Publisher as PublisherModel, Campaign as CampaignModel, User
 from database import engine, SessionLocal
-from schemas import CountryCreate, Country, OperatorCreate, OperatorUpdate, Operator, AdvertiserCreate, AdvertiserUpdate, Advertiser, PublisherCreate, PublisherUpdate, Publisher, CampaignCreate, CampaignUpdate, UserCreate, UserLogin
+from schemas import CountryCreate, ElasticsearchRequest, Country, OperatorCreate, OperatorUpdate, Operator, AdvertiserCreate, AdvertiserUpdate, Advertiser, PublisherCreate, PublisherUpdate, Publisher, CampaignCreate, CampaignUpdate, UserCreate, UserLogin
 import schemas  # Add this import
 from crud import (
     create_country, get_countries, update_country, delete_country,
@@ -12,7 +12,8 @@ from crud import (
     update_advertiser, delete_advertiser,
     create_publisher, get_publishers, update_publisher, delete_publisher,
     create_campaign, get_campaigns, get_campaign, update_campaign, delete_campaign,
-    create_user, authenticate_user, create_user_token  # Add create_user_token
+    create_user, authenticate_user, create_user_token,  # Add create_user_token
+    # send_to_elasticsearch  # Add send_to_elasticsearch
 )
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from auth import verify_token
@@ -27,7 +28,7 @@ setup_logging()
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="Advertising Platform API",
+    title="In-App Platform API",
     description="API for managing advertising campaigns",
     version="1.0.0",
 )
@@ -327,3 +328,27 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         logger.error("Invalid token for user: %s", username)
         raise HTTPException(status_code=401, detail="Invalid token")
     return user
+
+
+# @app.post("/send-to-elasticsearch/")
+# def send_document(request: ElasticsearchRequest):
+#     try:
+#         result = send_to_elasticsearch(request.document)
+#         return result
+#     except HTTPException as e:
+#         raise e
+#     except Exception as e:
+#         logger.error("An error occurred: %s", str(e))
+#         raise HTTPException(status_code=500, detail="An internal error occurred")
+
+# @app.get("/redis/publisher/{publisher_id}")
+# def check_redis_publisher(publisher_id: int):
+#     """Check if the Redis key for the publisher exists and its value"""
+#     redis_key = f"PUB_{publisher_id}"
+#     value = redis_client.get(redis_key)
+#     if value is None:
+#         logger.error("Redis key %s not found", redis_key)
+#         raise HTTPException(status_code=404, detail="Redis key not found")
+#     logger.info("Redis key %s found with value %s", redis_key, value.decode())
+#     return {"key": redis_key, "value": value.decode()}
+

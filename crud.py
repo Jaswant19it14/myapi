@@ -1,13 +1,30 @@
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import IntegrityError
 from models import Country, Operator, Advertiser, Publisher, Campaign, User
-from schemas import CountryCreate, OperatorCreate, OperatorUpdate, AdvertiserCreate, AdvertiserUpdate, PublisherCreate, PublisherUpdate, CampaignCreate, CampaignUpdate, UserCreate, UserLogin
+from schemas import CountryCreate, ElasticSearch, OperatorCreate, OperatorUpdate, AdvertiserCreate, AdvertiserUpdate, PublisherCreate, PublisherUpdate, CampaignCreate, CampaignUpdate, UserCreate, UserLogin
 from fastapi import HTTPException
 from auth import get_password_hash, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
 import logging
+import requests
 
 logger = logging.getLogger(__name__)
+
+# def send_to_elasticsearch(document: dict):
+#     url = "https://localhost:9200/1/_doc"
+#     headers = {"Content-Type": "application/json"}
+#     auth = ("elastic", "M6U6CMqfXb*dQdLEJ*sq")  # Replace with actual username and password
+
+#     logger.info("Sending document to Elasticsearch: %s", document)
+
+#     response = requests.post(url, json=document, headers=headers, auth=auth, verify=False)  # Disable SSL verification for local testing
+
+#     if response.status_code not in [200, 201]:
+#         logger.error("Failed to send document to Elasticsearch: %s", response.json())
+#         raise HTTPException(status_code=response.status_code, detail="Failed to send document to Elasticsearch")
+
+#     logger.info("Document sent to Elasticsearch: %s", response.json())
+#     return response.json()
 
 # Country CRUD
 def create_country(db: Session, country: CountryCreate):
@@ -193,15 +210,15 @@ def delete_advertiser(db: Session, advertiser_id: int):
 def create_publisher(db: Session, publisher: PublisherCreate):
     logger.info("Creating a new publisher: %s", publisher.name)
     # Check for duplicate email
-    existing_publisher = db.query(Publisher).filter(Publisher.email == publisher.email).first()
-    if existing_publisher:
-        logger.error("Email already registered: %s", publisher.email)
-        raise HTTPException(status_code=400, detail="Email already registered")
+    # existing_publisher = db.query(Publisher).filter(Publisher.email == publisher.email).first()
+    # if existing_publisher:
+    #     logger.error("Email already registered: %s", publisher.email)
+    #     raise HTTPException(status_code=400, detail="Email already registered")
     
     db_publisher = Publisher(
         name=publisher.name,
         company_name=publisher.company_name,
-        email=publisher.email,
+        # email=publisher.email,
         block_rule=publisher.block_rule,  # Change blockRule to block_rule
         status=publisher.status,  # Add company_name field
         cap=publisher.cap  # Add cap field
@@ -380,3 +397,4 @@ def create_user_token(user: User):
     )
     logger.info("Created token for user: %s", user.__dict__)
     return access_token
+
