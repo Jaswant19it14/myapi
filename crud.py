@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.exc import IntegrityError
 from models import Country, Operator, Advertiser, Publisher, Campaign, User
-from schemas import CountryCreate, ElasticSearch, OperatorCreate, OperatorUpdate, AdvertiserCreate, AdvertiserUpdate, PublisherCreate, PublisherUpdate, CampaignCreate, CampaignUpdate, UserCreate, UserLogin
+from schemas import CountryCreate, OperatorCreate, OperatorUpdate, AdvertiserCreate, AdvertiserUpdate, PublisherCreate, PublisherUpdate, CampaignCreate, CampaignUpdate, UserCreate, UserLogin
 from fastapi import HTTPException
 from auth import get_password_hash, verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta

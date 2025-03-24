@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from models import Base, Country as CountryModel, Operator as OperatorModel, Advertiser as AdvertiserModel, Publisher as PublisherModel, Campaign as CampaignModel, User
 from database import engine, SessionLocal
-from schemas import CountryCreate, ElasticsearchRequest, Country, OperatorCreate, OperatorUpdate, Operator, AdvertiserCreate, AdvertiserUpdate, Advertiser, PublisherCreate, PublisherUpdate, Publisher, CampaignCreate, CampaignUpdate, UserCreate, UserLogin
+from schemas import Country, OperatorCreate, OperatorUpdate, Operator, AdvertiserCreate, AdvertiserUpdate, Advertiser, PublisherCreate, PublisherUpdate, Publisher, CampaignCreate, CampaignUpdate, UserCreate, UserLogin
 import schemas  # Add this import
 from crud import (
     create_country, get_countries, update_country, delete_country,
